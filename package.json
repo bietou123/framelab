@@ -1,0 +1,62 @@
+{
+  "name": "framelab",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local Windows video editor with native FFmpeg",
+  "author": "bietou123",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "tsc --noEmit && vite build && node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "test:integration": "tsx tests/integration.ts",
+    "test:features": "tsx tests/native-features.ts",
+    "test:e2e": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/test-desktop.ps1",
+    "test:e2e:software": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/test-desktop.ps1 -SoftwareRenderer",
+    "test:e2e:diagnostic": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/test-desktop.ps1 -Diagnostic",
+    "test:e2e:packaged": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/test-desktop.ps1 -Packaged",
+    "test:renderer": "tsx tests/e2e.ts --renderer",
+    "test:acceptance": "tsx tests/acceptance.ts",
+    "test:package": "node scripts/verify-package.mjs",
+    "setup:native": "node scripts/setup-native.mjs",
+    "package:dir": "npm run build && electron-builder --win dir --x64",
+    "package:zip": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/package-zip.ps1",
+    "package": "npm run build && electron-builder --win dir portable nsis --x64",
+    "start": "node scripts/start.mjs"
+  },
+  "dependencies": {
+    "lucide-react": "^0.468.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "@vitejs/plugin-react": "^5.1.0",
+    "electron": "45.2.3",
+    "electron-builder": "^26.0.12",
+    "esbuild": "^0.25.12",
+    "playwright": "^1.56.1",
+    "sharp": "^0.34.5",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.2"
+  },
+  "build": {
+    "appId": "com.bietou.framelab",
+    "productName": "FrameLab",
+    "electronDist": "node_modules/electron/dist",
+    "directories": { "output": "release", "buildResources": "build" },
+    "files": ["dist/**/*", "dist-electron/**/*", "package.json", "README.md", "TEST_REPORT.md", "ARCHITECTURE.md", "THIRD_PARTY.md", "LICENSE"],
+    "extraResources": [{ "from": "../../Tools/NativeMedia/bin", "to": "native", "filter": ["*.exe", "*.txt"] }],
+    "asar": true,
+    "win": { "target": ["dir", "portable", "nsis"], "signExecutable": false, "artifactName": "FrameLab-${version}-${arch}.${ext}" },
+    "portable": { "artifactName": "FrameLab-${version}-${arch}-portable.${ext}" },
+    "nsis": { "artifactName": "FrameLab-${version}-${arch}-setup.${ext}", "oneClick": false, "perMachine": false, "allowToChangeInstallationDirectory": true, "deleteAppDataOnUninstall": false }
+  }
+}

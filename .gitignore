@@ -1,0 +1,16 @@
+node_modules/
+dist/
+dist-electron/
+release/
+.local-data/
+test-artifacts/
+*.frameproj
+*.mp4
+*.m4a
+*.wav
+*.mp3
+*.log
+*.partial.*
+build/
+native/
+.env*
