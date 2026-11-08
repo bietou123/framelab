@@ -72,7 +72,7 @@ try {
 
   for (const name of ['ffmpeg.exe', 'ffprobe.exe', 'FFmpeg-LICENSE.txt']) {
     const filename = path.join(directory, 'resources', 'native', name);
-    const original = path.resolve(root, '../../Tools/NativeMedia/bin', name);
+    const original = path.join(root, 'native', 'bin', name);
     checksums[name] = await hash(filename);
     assert.equal(checksums[name], await hash(original), `Native bundle mismatch: ${name}`);
   }

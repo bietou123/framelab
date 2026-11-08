@@ -1,31 +1,47 @@
 # FrameLab
 
-## Architecture
+## 架构
 
-- Electron main: file dialogs, read-only source access, native FFprobe JSON, bounded FFmpeg jobs, asset catalog, projects and recovery.
-- Preload: a typed IPC API; context isolation and sandbox enabled; no renderer Node access.
-- React / TypeScript: media bin, genuine video previews, inspectors and a multi-track timeline.
-- Shared model: frame-rational timing, immutable edits, export planning, subtitles and validation contracts.
-- Native FFmpeg: finite music preparation, video processing, separate faststart packaging and complete verification. Original inputs are never modified.
+- Electron 主进程：文件对话框、只读源访问、原生 FFprobe JSON、有界 FFmpeg
+  任务、素材目录、项目与恢复。
+- Preload：带类型的 IPC API；开启上下文隔离与沙箱；渲染进程没有 Node 访问权。
+- React / TypeScript：素材箱、真实视频预览、检查器与多轨时间线。
+- 共享模型：有理帧率时序、不可变编辑、导出规划、字幕与校验契约。
+- 原生 FFmpeg：有限的音乐预处理、视频处理、独立的 faststart 封装和完整验证。
+  原始输入永远不会被修改。
 
-## Delivery Stages
+## 交付阶段
 
-- [x] Stage 1 processing: import, real metadata, ordered splice, finite soundtrack, decimal-byte size budget, measured progress, verification, cancellation and queue. The real DJI export passed.
-- [x] Stage 2 implementation: multi-track edits, transform / color / keys, dissolve transitions, SRT, autosave / recovery / relink and compatible preview proxies. Native feature regression passed.
-- [x] Processing and renderer verification: 26 unit tests, 14 native integration checks, 15 native feature pixel / audio checks, 16 headless renderer checks and the two real DJI sources. Layout screenshots use explicit viewport / DPI emulation and verified PNG dimensions, not native window resizing.
-- [x] IPC diagnosis: 16 actual Electron preload / IPC checks with a test-only sandbox bypass. This does not satisfy secure desktop acceptance.
-- [x] Desktop acceptance: packaged secure Electron startup passed 17/17 desktop checks on 2026-11-08 with the production sandbox enabled (`secureStartupVerified=true`, `nativeWindowResizingVerified=true`), windows kept fully offscreen. Renderer-host tests remain a separate, weaker check.
-- [x] Local package verification: the Windows directory package passed six integrity / native smoke checks, including current build comparison and bundled FFmpeg / FFprobe encoding / full decoding. Build instructions, architecture and test report are included. Complete offline ZIP and installer targets are available through the build scripts. No personal media or asset catalog may enter a public release.
+- [x] 阶段 1 处理链路：导入、真实元数据、有序拼接、有限配乐、十进制字节
+  大小预算、可测量进度、验证、取消与队列。真实 DJI 导出已通过。
+- [x] 阶段 2 实现：多轨编辑、变换 / 颜色 / 关键帧、溶解转场、SRT、
+  自动保存 / 恢复 / 重链接和兼容的预览代理。原生功能回归已通过。
+- [x] 处理与渲染验证：26 项单元测试、14 项原生集成检查、15 项原生功能
+  像素 / 音频检查、16 项无头渲染检查，以及两路真实 DJI 源素材。布局截图
+  使用显式视口 / DPI 模拟并校验 PNG 尺寸，不等同于原生窗口缩放。
+- [x] IPC 诊断：16 项真实 Electron preload / IPC 检查，使用测试专用沙箱
+  绕过。这不构成安全桌面验收。
+- [x] 桌面验收：打包版安全 Electron 启动于 2026-11-08 通过 17/17 项桌面
+  检查，生产沙箱保持开启（`secureStartupVerified=true`、
+  `nativeWindowResizingVerified=true`），窗口全程位于屏幕外。渲染器宿主
+  测试仍是独立的、较弱的检查。
+- [x] 本地包验证：Windows 目录包通过 6 项完整性 / 原生冒烟检查，包括与
+  当前构建的比对以及包内 FFmpeg / FFprobe 编码 / 完整解码。构建说明、架构
+  和测试报告均已包含。构建脚本可生成完整离线 ZIP 与安装器目标。任何个人
+  媒体或素材目录都不得进入公开发布。
 
-## Boundaries
+## 边界
 
-Preserving resolution, frame rate and color metadata during lossy encoding is not lossless. Stream-copy is offered only when edits and parameters allow it. File size is validated before success. Progress during faststart is indeterminate unless FFmpeg supplies a measurable timestamp; completion is never simulated. There is no advertised resumable encoding.
+有损编码在保持分辨率、帧率和颜色元数据的情况下，仍然不是无损的。只有编辑
+与参数允许时才提供流复制。文件大小在宣告成功之前完成验证。除非 FFmpeg 提供
+可测量的时间戳，faststart 阶段的进度保持不确定；完成状态从不会模拟。没有
+宣称支持可续传编码。
 
-The current HDR re-encoding path requires an explicit SDR conversion choice. It does not claim complete HDR metadata preservation. Compatible HDR stream-copy remains separate. Local speech recognition requires a configured whisper.cpp executable and model; no cloud recognition is used.
+当前 HDR 重编码路径要求显式选择 SDR 转换。它不承诺完整保留 HDR 元数据。
+兼容的 HDR 流复制是另一条路径。本地语音识别需要配置好的 whisper.cpp 可执行
+文件与模型；不使用云端识别。
 
-Secure desktop acceptance remains separate from package integrity. Earlier
-managed-host runs recorded renderer restricted-token failures and a
-packaged-install-directory access fatal error; both are documented in
-`TEST_REPORT.md`. The later packaged run passed secure startup and native
-resizing without weakening production security settings. Neither a browser
-harness nor the sandbox-bypassed diagnostic is counted as a startup pass.
+安全桌面验收与包完整性相互独立。早前受管宿主记录过渲染器受限令牌失败和
+打包版安装目录访问致命错误；两者都记录在 `TEST_REPORT.md`。之后的打包版
+运行在未削弱生产安全设置的前提下通过了安全启动和原生窗口缩放。浏览器
+测试和绕过沙箱的诊断，都不计为启动验收。

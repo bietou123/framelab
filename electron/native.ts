@@ -7,7 +7,7 @@ export async function locateNative(resources?: string): Promise<NativeTools> {
   const bins = [
     process.env.FRAMELAB_NATIVE_DIR,
     resources && path.join(resources, 'native'),
-    path.resolve('../../Tools/NativeMedia/bin'),
+    path.resolve('native', 'bin'),
     path.resolve('native'),
   ].filter((p): p is string => Boolean(p));
   for (const bin of bins) {
