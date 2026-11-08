@@ -53,7 +53,7 @@
     "electronDist": "node_modules/electron/dist",
     "directories": { "output": "release", "buildResources": "build" },
     "files": ["dist/**/*", "dist-electron/**/*", "package.json", "README.md", "TEST_REPORT.md", "ARCHITECTURE.md", "THIRD_PARTY.md", "LICENSE"],
-    "extraResources": [{ "from": "native", "to": "native", "filter": ["*.exe", "*.txt"] }],
+    "extraResources": [{ "from": "native/bin", "to": "native", "filter": ["*.exe", "*.txt"] }],
     "asar": true,
     "win": { "target": ["dir", "portable", "nsis"], "signExecutable": false, "artifactName": "FrameLab-${version}-${arch}.${ext}" },
     "portable": { "artifactName": "FrameLab-${version}-${arch}-portable.${ext}" },
